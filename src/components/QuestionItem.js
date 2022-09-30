@@ -12,12 +12,13 @@ function QuestionItem({ question, handleDelete }) {
 }
 
   function handlePatch (e) {
+    console.log(e.target.value)
     fetch(`http://localhost:4000/questions/${id}`, {
       method:'PATCH',
       headers: {
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({correctIndex: parseInt(e.target.value) }) 
+      body: JSON.stringify({correctIndex: e.target.value }) 
     })
   }
 
