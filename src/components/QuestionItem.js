@@ -1,7 +1,25 @@
 import React from "react";
 
-function QuestionItem({ question }) {
+function QuestionItem({ question, handleDelete }) {
   const { id, prompt, answers, correctIndex } = question;
+
+  function deleteQuestion () {
+    fetch(`http://localhost:4000/questions/${id}`,{
+      method:'DELETE'
+    })
+    .then(res => res.json())
+    .then(() => handleDelete(id))
+}
+
+  function handlePatch (e) {
+    fetch(`http://localhost:4000/questions/${id}`, {
+      method:'PATCH',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({correctIndex: parseInt(e.target.value) }) 
+    })
+  }
 
   const options = answers.map((answer, index) => (
     <option key={index} value={index}>
@@ -15,9 +33,9 @@ function QuestionItem({ question }) {
       <h5>Prompt: {prompt}</h5>
       <label>
         Correct Answer:
-        <select defaultValue={correctIndex}>{options}</select>
+        <select onChange={handlePatch} defaultValue={correctIndex}>{options}</select>
       </label>
-      <button>Delete Question</button>
+      <button onClick={deleteQuestion}>Delete Question</button>
     </li>
   );
 }
